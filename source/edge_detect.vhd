@@ -8,7 +8,7 @@ ENTITY edge_detect IS
 			clk		: IN    std_logic;
 			data_in 	: IN    std_logic;
 			reset_n	: IN    std_logic;
-    	   rise    : OUT   std_logic;
+    	   rise    	: OUT   std_logic;
 			fall     : OUT   std_logic
     	);
 END edge_detect;
