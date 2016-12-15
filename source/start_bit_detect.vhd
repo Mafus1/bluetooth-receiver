@@ -29,12 +29,8 @@ BEGIN
 	--------------------------------------------------
 	comb_logic: PROCESS(count, edge, baud_tick)
 	BEGIN	
-		-- default
-		start_bit <= '0';
-	   
 		IF (count = count_to AND edge = '1') THEN
 			next_count <= count_from;
-			start_bit <= '1';
 	
 		-- decrement
 		ELSIF (count > count_to AND baud_tick = '1') THEN
@@ -44,24 +40,20 @@ BEGIN
 		ELSE
 			next_count <= count;
 		END IF;
-
 	END PROCESS comb_logic;   
 	
-	comb_logic_out: PROCESS()
+	comb_logic_out: PROCESS(count, edge)
 	BEGIN
-	
 		if(count = count_to AND edge = '1') THEN
 			start_bit <= '1';
 		ELSE
 			start_bit <= '0';
 		END IF;
-		
-	END PROCESS com_logic_out;
+	END PROCESS comb_logic_out;
 
 	 -------------------------------------------
     -- Process for registers
     -------------------------------------------
-	
 	flip_flops : PROCESS(clk, reset_n)
 	BEGIN	
 		IF reset_n = '0' THEN

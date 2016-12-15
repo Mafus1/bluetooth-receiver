@@ -41,6 +41,7 @@
 
 # ignore everything in subfolders..
 /*/*.*
+/*/*
 
 # ..except, dont ignore these files typs
 ## 
