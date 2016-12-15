@@ -9,6 +9,7 @@ ENTITY shiftreg IS
 			baud_tick	: IN		std_logic;
 			ser_data 	: IN     std_logic;
 			reset_n		: IN     std_logic;
+			start_bit	: IN		std_logic;
     	   wlkng_one  	: OUT    std_logic;
 			par_data    : OUT    std_logic_vector(7 downto 0)
     	);
@@ -20,14 +21,16 @@ ARCHITECTURE rtl OF shiftreg IS
 
 	-- Signals & Constants Declaration 
 	SIGNAL 	data, next_data 	: std_logic_vector(8 downto 0);
-	CONSTANT	default_data		: std_logic_vector(8 downto 0) := "000000000"; 
+	CONSTANT	default_data		: std_logic_vector(8 downto 0) := "100000000"; 
 	
 -- Begin Architecture
 BEGIN 
 
-	input_logic: PROCESS(data, ser_data, baud_tick)
+	input_logic: PROCESS(data, ser_data, baud_tick, start_bit)
 	BEGIN
-		if baud_tick = '1' THEN
+		IF start_bit = '1' THEN
+			data <= default_data;
+		ELSIF baud_tick = '1' THEN
 			next_data(7 downto 0) <= data(8 downto 1);
 			next_data(8) <= ser_data;
 		END IF;

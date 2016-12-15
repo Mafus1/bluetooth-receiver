@@ -468,9 +468,52 @@ agreement for further details.
 	)
 )
 (symbol
-	(rect 1000 512 1192 624)
+	(rect 1336 392 1480 504)
+	(text "edge_detect" (rect 5 0 95 14)(font "Arial" ))
+	(text "inst7" (rect 8 96 49 110)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "clk" (rect 0 0 24 14)(font "Arial" ))
+		(text "clk" (rect 21 27 45 41)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "data_in" (rect 0 0 57 14)(font "Arial" ))
+		(text "data_in" (rect 21 43 78 57)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "reset_n" (rect 0 0 57 14)(font "Arial" ))
+		(text "reset_n" (rect 21 59 78 73)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 144 32)
+		(output)
+		(text "rise" (rect 0 0 33 14)(font "Arial" ))
+		(text "rise" (rect 96 27 129 41)(font "Arial" ))
+		(line (pt 144 32)(pt 128 32))
+	)
+	(port
+		(pt 144 48)
+		(output)
+		(text "fall" (rect 0 0 33 14)(font "Arial" ))
+		(text "fall" (rect 96 43 129 57)(font "Arial" ))
+		(line (pt 144 48)(pt 128 48))
+	)
+	(drawing
+		(rectangle (rect 16 16 128 96))
+	)
+)
+(symbol
+	(rect 1000 512 1192 656)
 	(text "shiftreg" (rect 5 0 71 14)(font "Arial" ))
-	(text "inst5" (rect 8 96 49 110)(font "Arial" ))
+	(text "inst5" (rect 8 128 49 142)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -500,6 +543,13 @@ agreement for further details.
 		(line (pt 0 80)(pt 16 80))
 	)
 	(port
+		(pt 0 96)
+		(input)
+		(text "start_bit" (rect 0 0 74 14)(font "Arial" ))
+		(text "start_bit" (rect 21 91 95 105)(font "Arial" ))
+		(line (pt 0 96)(pt 16 96))
+	)
+	(port
 		(pt 192 32)
 		(output)
 		(text "wlkng_one" (rect 0 0 74 14)(font "Arial" ))
@@ -514,50 +564,7 @@ agreement for further details.
 		(line (pt 192 48)(pt 176 48)(line_width 3))
 	)
 	(drawing
-		(rectangle (rect 16 16 176 96))
-	)
-)
-(symbol
-	(rect 1336 392 1504 504)
-	(text "start_bit_detect" (rect 5 0 137 14)(font "Arial" ))
-	(text "inst6" (rect 8 96 49 110)(font "Arial" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "clk" (rect 0 0 24 14)(font "Arial" ))
-		(text "clk" (rect 21 27 45 41)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "baud_tick" (rect 0 0 74 14)(font "Arial" ))
-		(text "baud_tick" (rect 21 43 95 57)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48))
-	)
-	(port
-		(pt 0 64)
-		(input)
-		(text "reset_n" (rect 0 0 57 14)(font "Arial" ))
-		(text "reset_n" (rect 21 59 78 73)(font "Arial" ))
-		(line (pt 0 64)(pt 16 64))
-	)
-	(port
-		(pt 0 80)
-		(input)
-		(text "edge" (rect 0 0 33 14)(font "Arial" ))
-		(text "edge" (rect 21 75 54 89)(font "Arial" ))
-		(line (pt 0 80)(pt 16 80))
-	)
-	(port
-		(pt 168 32)
-		(output)
-		(text "start_bit" (rect 0 0 74 14)(font "Arial" ))
-		(text "start_bit" (rect 85 27 159 41)(font "Arial" ))
-		(line (pt 168 32)(pt 152 32))
-	)
-	(drawing
-		(rectangle (rect 16 16 152 96))
+		(rectangle (rect 16 16 176 128))
 	)
 )
 (connector
@@ -718,10 +725,6 @@ agreement for further details.
 	(pt 1832 184)
 )
 (connector
-	(pt 1832 184)
-	(pt 1832 216)
-)
-(connector
 	(pt 1936 216)
 	(pt 1832 216)
 )
@@ -782,36 +785,8 @@ agreement for further details.
 	(pt 960 160)
 )
 (connector
-	(pt 1272 352)
-	(pt 1272 440)
-)
-(connector
-	(pt 1272 352)
-	(pt 920 352)
-)
-(connector
-	(pt 1272 440)
-	(pt 1336 440)
-)
-(connector
 	(pt 1336 424)
 	(pt 1296 424)
-)
-(connector
-	(pt 1296 424)
-	(pt 1296 376)
-)
-(connector
-	(pt 840 376)
-	(pt 1296 376)
-)
-(connector
-	(pt 840 160)
-	(pt 840 376)
-)
-(connector
-	(pt 840 376)
-	(pt 840 544)
 )
 (connector
 	(pt 1248 328)
@@ -830,26 +805,9 @@ agreement for further details.
 	(pt 1272 328)
 )
 (connector
-	(text "baud_tick" (rect 1349 336 1423 350)(font "Arial" ))
-	(pt 1528 352)
-	(pt 1272 352)
-)
-(connector
 	(text "reset_n" (rect 1407 312 1464 326)(font "Arial" ))
 	(pt 1272 328)
 	(pt 1600 328)
-)
-(connector
-	(pt 1192 544)
-	(pt 1248 544)
-)
-(connector
-	(pt 1248 544)
-	(pt 1248 472)
-)
-(connector
-	(pt 1248 472)
-	(pt 1336 472)
 )
 (connector
 	(pt 808 264)
@@ -868,20 +826,73 @@ agreement for further details.
 	(pt 968 264)
 )
 (connector
-	(pt 872 328)
-	(pt 872 592)
+	(text "baud_tick" (rect 1349 336 1423 350)(font "Arial" ))
+	(pt 920 352)
+	(pt 1528 352)
 )
 (connector
-	(pt 872 592)
+	(pt 1192 544)
+	(pt 1272 544)
+)
+(connector
+	(pt 1272 440)
+	(pt 1336 440)
+)
+(connector
+	(pt 1272 440)
+	(pt 1272 544)
+)
+(connector
+	(pt 1296 424)
+	(pt 1296 368)
+)
+(connector
+	(pt 840 368)
+	(pt 1296 368)
+)
+(connector
+	(pt 840 160)
+	(pt 840 368)
+)
+(connector
+	(pt 840 368)
+	(pt 840 544)
+)
+(connector
+	(pt 1832 184)
+	(pt 1832 216)
+)
+(connector
+	(pt 1832 216)
+	(pt 1832 384)
+)
+(connector
+	(pt 880 328)
+	(pt 880 592)
+)
+(connector
 	(pt 1000 592)
+	(pt 880 592)
 )
 (connector
 	(pt 360 328)
-	(pt 872 328)
+	(pt 880 328)
 )
 (connector
-	(pt 872 328)
+	(pt 880 328)
 	(pt 920 328)
+)
+(connector
+	(pt 1832 384)
+	(pt 776 384)
+)
+(connector
+	(pt 776 384)
+	(pt 776 608)
+)
+(connector
+	(pt 1000 608)
+	(pt 776 608)
 )
 (junction (pt 360 368))
 (junction (pt 344 632))
@@ -897,11 +908,11 @@ agreement for further details.
 (junction (pt 1600 328))
 (junction (pt 1528 288))
 (junction (pt 840 160))
-(junction (pt 1272 352))
-(junction (pt 840 376))
 (junction (pt 1248 328))
 (junction (pt 808 264))
-(junction (pt 872 328))
+(junction (pt 840 368))
+(junction (pt 1832 216))
+(junction (pt 880 328))
 (text "PIO2 Connected" (rect 344 808 476 824)(font "Arial" (font_size 8)))
 (text "PIO5 Status" (rect 360 856 463 872)(font "Arial" (font_size 8)))
 (text "PIO8 RF Status" (rect 352 912 484 928)(font "Arial" (font_size 8)))
