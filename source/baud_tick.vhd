@@ -21,13 +21,13 @@ ARCHITECTURE rtl OF baud_tick IS
 	CONSTANT	init_period		 			:	unsigned(9 downto 0) := to_unsigned(651, 10); 
 	
 	-- length of a byte (8) for byte countdown
-	CONSTANT byte_countdown_length	:  unsigned(3 downto 0) := to_unsigned(7, 4);
+	CONSTANT byte_countdown_length	:  unsigned(3 downto 0) := to_unsigned(8, 4);
 	
 	-- signals for baud tick period counter
 	SIGNAL 	count, next_count			:	unsigned(9 downto 0);
 	
 	-- signals for byte counter
-	SIGNAL   byte_countdown, 			:	unsigned(3 downto 0);
+	SIGNAL   byte_countdown 			:	unsigned(3 downto 0);
 	SIGNAL	next_byte_countdown		:  unsigned(3 downto 0); 
 	
 -- Begin Architecture
@@ -37,15 +37,15 @@ BEGIN
 	-- input logic for baud tick
 	input_logic: PROCESS(count, start_bit)
 	BEGIN	
-		IF (start_bit = '1') THEN
+		IF start_bit = '1' THEN
 			next_count <= init_period;
 	
 		-- decrement
-		ELSIF (count > 0) THEN
+		ELSIF count > 0 THEN
 			next_count <= count - 1 ;
 
 		-- start new period
-		ELSE
+		ELSIF count = 0 THEN
 			next_count <= period;
 		END IF;
 
