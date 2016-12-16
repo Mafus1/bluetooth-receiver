@@ -26,7 +26,7 @@ BEGIN
     -- Process for registers (flip-flops)
     -------------------------------------------
 	
-	flip_flops : PROCESS(clk, reset_n)
+	flip_flops : PROCESS(clk, reset_n, q1)
 	BEGIN	
 		IF reset_n = '0' THEN
 			q1 			<= '0';

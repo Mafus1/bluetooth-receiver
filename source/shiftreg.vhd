@@ -26,30 +26,45 @@ ARCHITECTURE rtl OF shiftreg IS
 -- Begin Architecture
 BEGIN 
 
-	input_logic: PROCESS(data, ser_data, baud_tick, start_bit)
+	input_logic: PROCESS(data, start_bit, baud_tick, ser_data)
 	BEGIN
+	
+		-- write the walking one, followed by zeros, when we receive a start bit
 		IF start_bit = '1' THEN
-			data <= default_data;
+			next_data <= default_data;
+			
+		-- shift the serial input to the par output, if we have a baud tick
 		ELSIF baud_tick = '1' THEN
 			next_data(7 downto 0) <= data(8 downto 1);
 			next_data(8) <= ser_data;
+			
+		-- else, dont touch the flip flops
+		ELSE
+			next_data <= data;
+			
 		END IF;
+		
 	END PROCESS input_logic;
 
 	flip_flops : PROCESS(clk, reset_n)
 	BEGIN	
+	
 		IF reset_n = '0' THEN
 			data <= default_data;
+			
 		ELSIF (rising_edge(clk)) THEN
 			data <= next_data;
 		END IF;
+		
 	END PROCESS flip_flops;	
 	 
 	
 	output_logic: PROCESS(data)
 	BEGIN
+	
 		par_data <= data(8 downto 1);
 		wlkng_one <= data(0);
+		
 	END PROCESS output_logic;
 	
 END rtl;	
