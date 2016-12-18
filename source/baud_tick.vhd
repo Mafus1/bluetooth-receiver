@@ -45,7 +45,7 @@ BEGIN
 			next_count <= count - 1 ;
 
 		-- start new period
-		ELSIF count = 0 THEN
+		ELSE
 			next_count <= period;
 		END IF;
 
