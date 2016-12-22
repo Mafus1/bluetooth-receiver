@@ -17,7 +17,7 @@ END infrastructure;
 ARCHITECTURE rtl OF infrastructure IS
 
 	-- Signals & Constants Declaration 
-	SIGNAL q1: std_logic;
+	SIGNAL q1, q2: std_logic:= '0';
 	
 -- Begin Architecture
 BEGIN 
@@ -29,12 +29,14 @@ BEGIN
 	flip_flops : PROCESS(clk, reset_n, q1)
 	BEGIN	
 		IF reset_n = '0' THEN
-			q1 			<= '0';
-			serdata_out <= q1;
+			q1 <= '0';
+			q2 <= '0';
 		ELSIF rising_edge(clk) THEN
-			q1 			<= serdata_in;
-			serdata_out <= q1;
+			q1 <= serdata_in;
+			q2 <= q1;
 		END IF;
 	END PROCESS flip_flops;	
+	
+	serdata_out <= q2;
 	
 END rtl;	

@@ -42,7 +42,7 @@ ARCHITECTURE rtl OF rxreg IS
 -- Begin Architecture
 BEGIN 
 
-	input_logic: PROCESS (current_reg)
+	input_logic: PROCESS (ALL)
 	BEGIN
 		
 		IF current_reg < 3 AND valid_data = '1' THEN
@@ -55,7 +55,7 @@ BEGIN
 			
 	END PROCESS input_logic;
 	
-	register_logic: PROCESS (reg_0, reg_1, reg_2, reg_3, valid_data)
+	register_logic: PROCESS (ALL)
 	BEGIN
 	
 		IF valid_data = '1' AND current_reg = reg_0_state THEN
