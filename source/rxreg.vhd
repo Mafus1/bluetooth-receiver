@@ -1,22 +1,23 @@
 -- Library & Use Statements
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
 
 -- Entity Declaration 
 ENTITY rxreg IS
   PORT( 
-			clk			: IN		std_logic;
-			reset_n		: IN     std_logic;
-			valid_data	: IN		std_logic;
-			data_i	   : IN    	std_logic_vector(7 downto 0);
-			data_0_l		: OUT		std_logic_vector(3 downto 0);
-			data_0_m		: OUT		std_logic_vector(3 downto 0);
-			data_1_l		: OUT		std_logic_vector(3 downto 0);
-			data_1_m		: OUT		std_logic_vector(3 downto 0);
-			data_2_l		: OUT		std_logic_vector(3 downto 0);
-			data_2_m		: OUT		std_logic_vector(3 downto 0);
-			data_3_l		: OUT		std_logic_vector(3 downto 0);
-			data_3_m		: OUT		std_logic_vector(3 downto 0)
+			clk				: IN		std_logic;
+			reset_n			: IN     std_logic;
+			valid_data		: IN		std_logic;
+			par_data_in	   : IN    	std_logic_vector(7 downto 0); 
+			reg_0_l			: OUT		std_logic_vector(3 downto 0); -- to sevseg1 / only 4bit, split reg 0 least
+			reg_0_m			: OUT		std_logic_vector(3 downto 0);	-- to sevseg2 / only 4bit, split reg 0 most
+			reg_1_l			: OUT		std_logic_vector(3 downto 0);	-- to sevseg3 / only 4bit, split reg 1 least
+			reg_1_m			: OUT		std_logic_vector(3 downto 0);	-- to sevseg4 / only 4bit, split reg 1 most
+			reg_2_l			: OUT		std_logic_vector(3 downto 0);	-- to sevseg5 / only 4bit, split reg 2 least
+			reg_2_m			: OUT		std_logic_vector(3 downto 0);	-- to sevseg6 / only 4bit, split reg 2 most
+			reg_3_l			: OUT		std_logic_vector(3 downto 0);	-- to sevseg7 / only 4bit, split reg 3 least
+			reg_3_m			: OUT		std_logic_vector(3 downto 0)	-- to sevseg8 / only 4bit, split reg 3 most
     	);
 END rxreg;
 
@@ -25,59 +26,75 @@ END rxreg;
 ARCHITECTURE rtl OF rxreg IS
 
 	-- Signals & Constants Declaration 
-	SIGNAL 	data, next_data 	: std_logic_vector(31 downto 0) := x"00000000";
-	CONSTANT	default_data		: std_logic_vector(31 downto 0) := x"00000000"; 
+	CONSTANT default_data					: std_logic_vector(7 downto 0):= "00000000";
+	CONSTANT default_reg						: unsigned(1 downto 0):= to_unsigned(0, 2);
+	
+	CONSTANT reg_0_state 					: unsigned(1 downto 0):= to_unsigned(0, 2);
+	CONSTANT reg_1_state 					: unsigned(1 downto 0):= to_unsigned(1, 2);
+	CONSTANT reg_2_state 					: unsigned(1 downto 0):= to_unsigned(2, 2);
+	CONSTANT reg_3_state 					: unsigned(1 downto 0):= to_unsigned(3, 2);
+	
+	SIGNAL	reg_0, reg_1, reg_2, reg_3	: std_logic_vector(7 downto 0):= default_data;
+	SIGNAL	current_reg, next_reg		: unsigned(1 downto 0):= default_reg;
 	
 -- Begin Architecture
 BEGIN 
 
-	input_logic: PROCESS(data, valid_data, data_i)
+	input_logic: PROCESS (current_reg)
 	BEGIN
-	
-		-- add new data to the data bus
-		IF valid_data = '1' THEN
-			next_data(23 downto 0) <= data(31 downto 8);
-			next_data(31 downto 24) <= data_i;
-			
-		-- else, dont touch the data bus
-		ELSE
-			next_data <= data;
-			
-		END IF;
 		
+		IF current_reg < 3 AND valid_data = '1' THEN
+			next_reg <= current_reg + 1;
+		ELSIF current_reg = 3 AND valid_data = '1' THEN
+			next_reg <= default_reg;
+		ELSE
+			next_reg <= current_reg;
+		END IF;
+			
 	END PROCESS input_logic;
+	
+	register_logic: PROCESS (reset_n, valid_data)
+	BEGIN
+		IF reset_n = '0' THEN
+				reg_0 <= default_data;
+				reg_1 <= default_data;
+				reg_2 <= default_data;
+				reg_3 <= default_data;
+				
+		ELSIF valid_data = '1' THEN
+				
+				CASE current_reg IS
+					WHEN	reg_0_state	=>	reg_0	<= par_data_in;
+					WHEN	reg_1_state	=> reg_1 <= par_data_in;
+					WHEN	reg_2_state	=> reg_2 <= par_data_in;
+					WHEN  reg_3_state	=> reg_3 <= par_data_in;
+					WHEN OTHERS => reg_0	<= par_data_in;
+				END CASE;
+				
+		END IF;
 
-	flip_flops : PROCESS(clk, reset_n)
+	END PROCESS register_logic;
+
+	flip_flops : PROCESS(reset_n, clk)
 	BEGIN	
 	
 		IF reset_n = '0' THEN
-			data <= default_data;
-			
-		ELSIF (rising_edge(clk)) THEN
-			data <= next_data;
+			current_reg <= default_reg;
+		ELSIF rising_edge(clk) THEN
+			current_reg <= next_reg;
 		END IF;
 		
 	END PROCESS flip_flops;	
 	 
 	
-	output_logic: PROCESS(data)
-	BEGIN
-		-- register 0
-		data_0_m <= data(31 downto 28);
-		data_0_l <= data(27 downto 24);
+	reg_0_l 	<= reg_0 (3 downto 0);		
+	reg_0_m 	<= reg_0 (7 downto 4);		
+	reg_1_l	<= reg_1 (3 downto 0);	
+	reg_1_m	<= reg_1 (7 downto 4);			
+	reg_2_l	<= reg_2 (3 downto 0);
+	reg_2_m	<= reg_2 (7 downto 4);		
+	reg_3_l	<= reg_3 (3 downto 0);	
+	reg_3_m	<= reg_3 (7 downto 4);
 		
-		-- register 1
-		data_1_m <= data(23 downto 20);
-		data_1_l <= data(19 downto 16);
-		
-		-- register 2
-		data_2_m <= data(15 downto 12);
-		data_2_l <= data(11 downto 8);
-		
-		-- register 3
-		data_3_m <= data(7 downto 4);
-		data_3_l <= data(3 downto 0);
-		
-	END PROCESS output_logic;
 	
 END rtl;	
