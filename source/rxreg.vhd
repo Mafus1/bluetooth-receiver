@@ -34,8 +34,10 @@ ARCHITECTURE rtl OF rxreg IS
 	CONSTANT reg_2_state 					: unsigned(1 downto 0):= to_unsigned(2, 2);
 	CONSTANT reg_3_state 					: unsigned(1 downto 0):= to_unsigned(3, 2);
 	
-	SIGNAL	reg_0, reg_1, reg_2, reg_3	: std_logic_vector(7 downto 0):= default_data;
-	SIGNAL	current_reg, next_reg		: unsigned(1 downto 0):= default_reg;
+	SIGNAL	current_reg, next_reg									: unsigned(1 downto 0):= default_reg;
+	SIGNAL	reg_0, reg_1, reg_2, reg_3								: std_logic_vector(7 downto 0):= default_data;
+	SIGNAL	next_reg_0, next_reg_1, next_reg_2, next_reg_3 	: std_logic_vector(7 downto 0):= default_data;
+	
 	
 -- Begin Architecture
 BEGIN 
@@ -53,24 +55,31 @@ BEGIN
 			
 	END PROCESS input_logic;
 	
-	register_logic: PROCESS (reset_n, valid_data)
+	register_logic: PROCESS (reg_0, reg_1, reg_2, reg_3, valid_data)
 	BEGIN
-		IF reset_n = '0' THEN
-				reg_0 <= default_data;
-				reg_1 <= default_data;
-				reg_2 <= default_data;
-				reg_3 <= default_data;
-				
-		ELSIF valid_data = '1' THEN
-				
-				CASE current_reg IS
-					WHEN	reg_0_state	=>	reg_0	<= par_data_in;
-					WHEN	reg_1_state	=> reg_1 <= par_data_in;
-					WHEN	reg_2_state	=> reg_2 <= par_data_in;
-					WHEN  reg_3_state	=> reg_3 <= par_data_in;
-					WHEN OTHERS => reg_0	<= par_data_in;
-				END CASE;
-				
+	
+		IF valid_data = '1' AND current_reg = reg_0_state THEN
+			next_reg_0 <= par_data_in;
+		ELSE
+			next_reg_0 <= reg_0;
+		END IF;
+		
+		IF valid_data = '1' AND current_reg = reg_1_state THEN
+			next_reg_1 <= par_data_in;
+		ELSE
+			next_reg_1 <= reg_1;
+		END IF;
+		
+		IF valid_data = '1' AND current_reg = reg_2_state THEN
+			next_reg_2 <= par_data_in;
+		ELSE
+			next_reg_2 <= reg_2;
+		END IF;
+		
+		IF valid_data = '1' AND current_reg = reg_3_state THEN
+			next_reg_3 <= par_data_in;
+		ELSE
+			next_reg_3 <= reg_3;
 		END IF;
 
 	END PROCESS register_logic;
@@ -86,6 +95,22 @@ BEGIN
 		
 	END PROCESS flip_flops;	
 	 
+	register_flip_flops: PROCESS(reset_n, clk)
+	BEGIN
+
+		IF reset_n = '0' THEN
+			reg_0 <= default_data;
+			reg_1 <= default_data;
+			reg_2 <= default_data;
+			reg_3 <= default_data;
+		ELSIF rising_edge(clk) THEN
+			reg_0 <= next_reg_0;
+			reg_1 <= next_reg_1;
+			reg_2 <= next_reg_2;
+			reg_3 <= next_reg_3;
+		END IF;
+		
+	END PROCESS register_flip_flops;
 	
 	reg_0_l 	<= reg_0 (3 downto 0);		
 	reg_0_m 	<= reg_0 (7 downto 4);		

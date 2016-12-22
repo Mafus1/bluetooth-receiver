@@ -1053,10 +1053,6 @@ agreement for further details.
 	(pt 1304 232)
 )
 (connector
-	(pt 1448 232)
-	(pt 1624 232)
-)
-(connector
 	(pt 1288 216)
 	(pt 1304 216)
 )
@@ -1254,14 +1250,6 @@ agreement for further details.
 	(pt 840 544)
 )
 (connector
-	(pt 1832 184)
-	(pt 1832 216)
-)
-(connector
-	(pt 1832 216)
-	(pt 1832 384)
-)
-(connector
 	(pt 880 328)
 	(pt 880 592)
 )
@@ -1276,14 +1264,6 @@ agreement for further details.
 (connector
 	(pt 880 328)
 	(pt 920 328)
-)
-(connector
-	(pt 1832 384)
-	(pt 776 384)
-)
-(connector
-	(pt 776 384)
-	(pt 776 608)
 )
 (connector
 	(pt 1000 608)
@@ -1498,6 +1478,27 @@ agreement for further details.
 	(pt 1936 624)
 	(pt 1944 624)
 	(bus)
+)
+(connector
+	(pt 1832 384)
+	(pt 776 384)
+)
+(connector
+	(pt 776 608)
+	(pt 776 384)
+)
+(connector
+	(pt 1832 184)
+	(pt 1832 216)
+)
+(connector
+	(pt 1832 216)
+	(pt 1832 384)
+)
+(connector
+	(text "fall" (rect 1458 216 1491 230)(font "Arial" ))
+	(pt 1448 232)
+	(pt 1624 232)
 )
 (junction (pt 360 368))
 (junction (pt 344 632))
